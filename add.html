@@ -1,8 +1,7 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Star Wars - Express</title>
+  <title>Hot Restaurant</title>
   <!-- Latest compiled and minified CSS & JS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery.js"></script>
@@ -11,22 +10,15 @@
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <div class="jumbotron">
+    <div class="jumbotron">
+      
+      <h1 class="text-center"><span class="glyphicon glyphicon-fire"></span> HOT RESTAURANT</h1>
+      <h3 class="text-center">Make your Reservation</h3>
+      <hr>
+      <div class="text-center">
                 <div class="row">
-                    <h1>
-                        <span class="glyphicon glyphicon-fire"></span>
-                        Hot Restaurant
-                    </h1>
-                </div>
-                <div class="row">
-                    <h2>
-                        Make Your Reservation
-                    </h2>
-                </div>
-                <div class="row">
-                    <button class="btn btn-primary btn-lg" id="addBtn"><span class="glyphicon glyphicon-home"></span> View Tables</button>
-                    <button class="btn btn-lg" id="addBtn"><span class="glyphicon glyphicon-home"></span></button>
+                    <a href="/view"><button class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-home"></span> View Tables</button></a>
+                    <a href="/"><button class="btn btn-lg"><span class="glyphicon glyphicon-home"></span></button></a>
                     
                 </div>
             </div>
@@ -63,15 +55,47 @@
                             </form>
                             <br>
                             <div class="text-left">
-                            <button type="submit" class="btn btn-primary btn-md" id="addBtn"></span><span class="glyphicon glyphicon-fire"></span> Make Reservation</button>
+                            <button type="submit" class="btn btn-danger btn-md" id="addBtn"></span><span class="glyphicon glyphicon-fire"></span> Make Reservation</button>
                             </div>
                         </div>
                     </div>
-                
+                   <footer><a href="/api/tables"> API Table Link </a> | <a href="/"> API Wait List </a></footer>
             </div>
         </div>
     </div>
 
+    <script type="text/javascript">
+        $("#addBtn").on("click", () => {
+            var regex = /[a-z]/g
+            
+            if ($("#name").val().trim() === "") {
+                console.log("Please enter your name");
+            } else if ($("#phone").val().trim() === "") {
+                console.log("Please enter your phone number")
+            } else if ($("#phone").val().trim().toLowerCase().match(regex)) {
+                console.log("Please enter a valid phone number")
+            } else {
+            var newCustomer = {
+                name: $("#name").val().trim(),
+                phone: $("#phone").val().trim(),
+                email: $("#email").val().trim(),
+                id: $("#uniqueID").val().trim()
+            };
+
+            //This clears the fields after you click on button
+            $('input[type=text]').each(() => {
+            $(this).val("");
+            });
+
+            $.post("http://localhost:3000/api/tables", newCustomer)
+            .done((data) => {
+                console.log(data);
+            });
+            return false;
+            }
+        });
+    
+    </script>
 
 </body>
 </html>
